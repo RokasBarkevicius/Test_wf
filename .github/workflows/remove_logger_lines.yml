@@ -1,0 +1,42 @@
+name: Comment Out Logger Messages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  comment_out_logger_messages:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Comment Out Logger Messages
+      run: |
+        # Find all Python files with the .py extension
+        files_to_modify=$(find . -type f -name "*.py")
+
+        # Comment out occurrences of _logger.info/debug/warning/error("Message") with multi-line support
+        for file in $files_to_modify; do
+          sed -i '/_logger\.\(info\|debug\|warning\|error\)(/{
+            :start
+            /)/!{
+              N
+              b start
+            }
+            s/^/# /
+          }' $file
+        done
+
+        # Stage the changes
+        git add $files_to_modify
+
+        # Commit the changes with a custom message
+        git commit -m "Comment out Logger Messages"
+
+        # Push the changes back to the repository
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
