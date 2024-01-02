@@ -33,6 +33,7 @@ jobs:
                     print "# " $0
                     if (!/\)$/) {
                         commentBlock=1
+                        openParenCount=1
                     } else {
                         commentBlock=0
                     }
@@ -40,7 +41,12 @@ jobs:
                 }
                 commentBlock {
                     print "# " $0
-                    if (/\)$/ && !/\(_logger\./) {
+                    if (/\(/) {
+                        openParenCount++
+                    }
+                    if (/\)$/ && openParenCount > 1) {
+                        openParenCount--
+                    } elsif (/\)$/) {
                         commentBlock=0
                     }
                     next
