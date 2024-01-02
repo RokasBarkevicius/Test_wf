@@ -2,10 +2,10 @@ import logging
 _logger = logging.getLogger(__name__)
 
 a = 5
-_logger.info(a)
+# _logger.info(a)
 b = 6
 c = a*b +7
-_logger.debug(
+# _logger.debug(
 	"%s\nhello\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
 	"C" * 100,
 	"N" * 100,
