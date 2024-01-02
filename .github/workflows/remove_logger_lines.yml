@@ -30,31 +30,38 @@ jobs:
         for file in $files_to_modify; do
             awk '
                 /_logger\./ {
-                    print "# " $0
-                    openParenCount = 0
-                    lineOpenParenCount = gsub(/\(/, "", $0)
-                    openParenCount += lineOpenParenCount
-                    lineCloseParenCount = gsub(/\)/, "", $0)
-                    openParenCount -= lineCloseParenCount
-                    if (openParenCount == 0) {
-                        commentBlock=0
+                    if (!/^#/) {
+                        print "# " $0
+                        openParenCount = 0
+                        lineOpenParenCount = gsub(/\(/, "", $0)
+                        openParenCount += lineOpenParenCount
+                        lineCloseParenCount = gsub(/\)/, "", $0)
+                        openParenCount -= lineCloseParenCount
+                        if (openParenCount == 0) {
+                            commentBlock=0
+                        } else {
+                            commentBlock=1
+                        }
                     } else {
-                        commentBlock=1
+                        print $0
                     }
                     next
                 }
                 commentBlock {
-                    print "# " $0
-                    lineOpenParenCount = gsub(/\(/, "", $0)
-                    openParenCount += lineOpenParenCount
-                    lineCloseParenCount = gsub(/\)/, "", $0)
-                    openParenCount -= lineCloseParenCount
-                    if (openParenCount == 0){
-                      commentBlock=0
+                    if (!/^#/) {
+                        print "# " $0
+                        lineOpenParenCount = gsub(/\(/, "", $0)
+                        openParenCount += lineOpenParenCount
+                        lineCloseParenCount = gsub(/\)/, "", $0)
+                        openParenCount -= lineCloseParenCount
+                        if (openParenCount == 0){
+                          commentBlock=0
+                        } else {
+                          commentBlock=1
+                        }
                     } else {
-                      commentBlock=1
-                    }
-                    
+                        print $0
+                    }  
                     next
                 }
                 { print }
