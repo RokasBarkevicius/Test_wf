@@ -12,9 +12,10 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-
+      
     - name: Comment Out Logger Messages
-      run:
+      run: |
+      
         # Find all Python files with the .py extension 
         files_to_modify=$(find . -type f -name "*.py")
 
