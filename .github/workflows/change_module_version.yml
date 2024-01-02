@@ -23,10 +23,19 @@ jobs:
     - name: Change Module Version
       run: |
       
-        # Find all Python files with the .py extension 
+        # Find all first level folders in repository 
         directories_to_modify=$(find . -maxdepth 1 -type d)
         for dir in $directories_to_modify; do
+            cd "$dir"
             echo "No changes in $dir. Nothing to commit."
+            if git diff-index --quiet HEAD --; then
+                echo "No changes in $dir. Nothing to commit."
+            else
+                # For example, you can print the changes
+                git diff
+            fi
+            # Return to the original directory
+            cd ..
         done
 
       env:
