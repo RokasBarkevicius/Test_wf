@@ -2,7 +2,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 a = 5
-_logger.info(a)
+# _logger.info(a)
 b = 6
 c = a*b +7
 _logger.debug(
