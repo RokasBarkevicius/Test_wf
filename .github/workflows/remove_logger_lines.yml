@@ -16,7 +16,7 @@ jobs:
     - name: Setup Git Config
       run: |
       
-        # setup the username and email.
+        # Setup the username and email.
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
           
