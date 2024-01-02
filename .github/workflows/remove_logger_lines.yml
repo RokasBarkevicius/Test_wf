@@ -28,7 +28,7 @@ jobs:
 
         # Comment out occurrences of _logger.info/debug/warning/error("Message") with multi-line support
         for file in $files_to_modify; do
-          sed -i -E "/^\s*_logger.*;$/ s|^|#|; /^\s*_logger/, /);$/ s|^|#|" $file
+          sed -i -E "/^\s*_logger.*;$/ s|^|#|; /^\s*_logger/, /\)$/ s|^|#|" $file
         done
 
         # Stage the changes
