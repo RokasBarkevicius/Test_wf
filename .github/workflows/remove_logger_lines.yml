@@ -60,14 +60,17 @@ jobs:
                 { print }
             ' $file > temp_file && mv temp_file $file
         done
+        # Check if there are changes
+        if git diff --quiet; then
+            echo "No changes in $files_to_modify. Nothing to commit."
+        else
+            # Stage the changes
+            git add $files_to_modify
 
-        # Stage the changes
-        git add $files_to_modify
+            # Commit the changes with a custom message
+            git commit -m "Comment out Logger Messages"
 
-        # Commit the changes with a custom message
-        git commit -m "Comment out Logger Messages"
-
-        # Push the changes back to the repository
-        git push origin main
+            # Push the changes back to the repository
+            git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
