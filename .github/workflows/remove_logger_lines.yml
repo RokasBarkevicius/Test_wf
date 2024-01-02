@@ -33,12 +33,14 @@ jobs:
                     print "# " $0
                     if (!/\)$/) {
                         commentBlock=1
+                    } else {
+                        commentBlock=0
                     }
                     next
                 }
                 commentBlock {
                     print "# " $0
-                    if (/\)$/) {
+                    if (/\)$/ && !/\(_logger\./) {
                         commentBlock=0
                     }
                     next
