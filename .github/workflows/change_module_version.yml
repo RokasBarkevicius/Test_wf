@@ -27,7 +27,7 @@ jobs:
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
             cd "${dir:2}"
-            echo "No changes in $dir. Nothing to commit."
+            echo "No changes in ${dir:2}. Nothing to commit."
             if git diff-index --quiet HEAD --; then
                 echo "in if"
             else
