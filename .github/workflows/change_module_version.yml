@@ -24,10 +24,11 @@ jobs:
       run: |
       
         # Find all Python files with the .py extension 
-        files_to_modify=$(find . -type d)
+        directories_to_modify =$(find . -maxdepth 2 -type d)
 
-        
-        echo "No changes in $files_to_modify. Nothing to commit."
+        for dir in $directories_to_modify; do
+            echo "No changes in $dir. Nothing to commit."
+        done
 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
