@@ -31,27 +31,30 @@ jobs:
             awk '
                 /_logger\./ {
                     print "# " $0
-                    if (!/\)$/) {
-                        commentBlock=1
-                        openParenCount=1
-                    } else {
+                    openParenCount = 0
+                    lineOpenParenCount = gsub(/\(/, "", $0)
+                    openParenCount += lineOpenParenCount
+                    lineCloseParenCount = gsub(/\)/, "", $0)
+                    openParenCount -= lineCloseParenCount
+                    if (openParenCount == 0) {
                         commentBlock=0
+                    } else {
+                        commentBlock=1
                     }
                     next
                 }
                 commentBlock {
                     print "# " $0
-                    if (/\(/) {
-                        openParenCount++
+                    lineOpenParenCount = gsub(/\(/, "", $0)
+                    openParenCount += lineOpenParenCount
+                    lineCloseParenCount = gsub(/\)/, "", $0)
+                    openParenCount -= lineCloseParenCount
+                    if (openParenCount == 0){
+                      commentBlock=0
+                    } else {
+                      commentBlock=1
                     }
-                    if (/\)$/ && openParenCount > 1) {
-                        openParenCount--
-                        if (openParenCount == 0){
-                          commentBlock=0
-                        }
-                    } else if (/\)$/) {
-                        commentBlock=0
-                    }
+                    
                     next
                 }
                 { print }
