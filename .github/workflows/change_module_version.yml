@@ -27,15 +27,12 @@ jobs:
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
             cd "${dir:2}"
-            echo "No changes in ${dir:2}. Nothing to commit."
-            if git diff; then
-                echo "in if"
-                git diff
-            else
-                # For example, you can print the changes
-                echo "in else"
-                git diff
-            fi
+              if git diff --exit-code "$before_sha"; then
+                echo "No differences found in ${dir:2} since the last commit."
+              else
+                # Print the differences
+                git diff "$before_sha"
+              fi
             # Return to the original directory
             cd ..
         done
