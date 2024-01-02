@@ -24,18 +24,18 @@ jobs:
       run: |
       
         # Find all first level folders in repository 
-        directories_to_modify=$(find . -maxdepth 1 -type d)
+        directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
-            cd "$dir"
+            #cd "$dir"
             echo "No changes in $dir. Nothing to commit."
-            if git diff-index --quiet HEAD --; then
-                echo "No changes in $dir. Nothing to commit."
-            else
+            #if git diff-index --quiet HEAD --; then
+                #echo "No changes in $dir. Nothing to commit."
+            #else
                 # For example, you can print the changes
-                git diff
-            fi
+                #git diff
+            #fi
             # Return to the original directory
-            cd ..
+            #cd ..
         done
 
       env:
