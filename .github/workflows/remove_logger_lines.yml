@@ -30,9 +30,9 @@ jobs:
         for file in $files_to_modify; do
           sed -i '/_logger\.\(info\|debug\|warning\|error\)(/{
             :start
-            /)/!{
-              N
-              b start
+            /)$/!{
+                N
+                b start
             }
             s/^/# /
           }' $file
