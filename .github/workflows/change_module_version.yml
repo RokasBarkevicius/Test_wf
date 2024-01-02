@@ -28,7 +28,7 @@ jobs:
         for dir in $directories_to_modify; do
             cd "${dir:2}"
             echo "No changes in ${dir:2}. Nothing to commit."
-            if git diff-index --quiet HEAD --; then
+            if git diff --exit-code; then
                 echo "in if"
             else
                 # For example, you can print the changes
