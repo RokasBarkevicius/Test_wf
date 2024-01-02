@@ -29,21 +29,18 @@ jobs:
         # Comment out occurrences of _logger.info/debug/warning/error("Message") with multi-line support
         for file in $files_to_modify; do
             awk '
-                BEGIN { flag=0 }
                 /_logger\./ {
                     print "# " $0
-                    if (/.*\)$/) {
-                        flag=0
-                    } else {
-                        flag=1
+                    if (!/\)$/) {
+                        commentBlock=1
                     }
                     next
                 }
-                flag {
-                    if (/.*\)$/) {
-                        flag=0
-                    }
+                commentBlock {
                     print "# " $0
+                    if (/\)$/) {
+                        commentBlock=0
+                    }
                     next
                 }
                 { print }
