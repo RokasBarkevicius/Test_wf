@@ -14,8 +14,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Comment Out Logger Messages
-      run: |
-        # Find all Python files with the .py extension
+      run:
+        # Find all Python files with the .py extension 
         files_to_modify=$(find . -type f -name "*.py")
 
         # Comment out occurrences of _logger.info/debug/warning/error("Message") with multi-line support
