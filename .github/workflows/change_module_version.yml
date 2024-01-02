@@ -1,0 +1,33 @@
+name: Change module version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  change_module_version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Setup Git Config
+      run: |
+      
+        # Setup the username and email.
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+          
+    - name: Change Module Version
+      run: |
+      
+        # Find all Python files with the .py extension 
+        files_to_modify=$(find . -type d)
+
+        
+        echo "No changes in $files_to_modify. Nothing to commit."
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
