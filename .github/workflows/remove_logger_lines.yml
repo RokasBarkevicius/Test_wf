@@ -52,7 +52,7 @@ jobs:
                     next
                 }
                 { print }
-            ' $file > temp_file && mv temp_file $file
+            ' $file
         done
 
         # Stage the changes
