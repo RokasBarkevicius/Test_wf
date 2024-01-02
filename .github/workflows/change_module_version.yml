@@ -24,7 +24,7 @@ jobs:
       run: |
       
         # Find all Python files with the .py extension 
-        directories_to_modify=$(find . -maxdepth 2 -type d)
+        directories_to_modify=$(find . -maxdepth 1 -type d)
         for dir in $directories_to_modify; do
             echo "No changes in $dir. Nothing to commit."
         done
