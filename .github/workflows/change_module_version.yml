@@ -33,7 +33,7 @@ jobs:
 
             # Get the first component as modified value
             modified_value="${parts[0]}"
-
+            echo "$modified_value"
             # Check if the modified value is not already in the list
             if [[ ! " $changed_directories " =~ " $modified_value " ]]; then
                 # Add the modified value to the list
