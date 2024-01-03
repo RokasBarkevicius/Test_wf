@@ -23,12 +23,13 @@ jobs:
     - name: Change Module Version
       run: |
       
-        previous_commit=$(git rev-parse origin/main~1)
+        
         # Find all first level folders in repository 
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
           cd "${dir:2}"
           echo "${dir:2}"
+          previous_commit=$(git rev-parse 1 -- "${dir:2}")
           if git diff --exit-code --quiet $previous_commit -- "${dir:2}"; then
             echo "no"
           else
