@@ -17,23 +17,25 @@ jobs:
         id: get-changes
         run: |
 
-          # Find all first level folders in repository 
-          directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
-          for dir in $directories_to_modify; do
-            cd "${dir:2}"
-            echo "${dir:2}"
-            # Get the second-to-last commit hash for the directory
-            previous_commit=$(git rev-list -n 2 HEAD -- "${dir:2}" | tail -n 1)
+          echo "Changed files:"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+          # # Find all first level folders in repository 
+          # directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
+          # for dir in $directories_to_modify; do
+          #   cd "${dir:2}"
+          #   echo "${dir:2}"
+          #   # Get the second-to-last commit hash for the directory
+          #   previous_commit=$(git rev-list -n 2 HEAD -- "${dir:2}" | tail -n 1)
             
-            # Check if the directory has been modified
-            if git diff --exit-code --quiet $previous_commit -- "${dir:2}"; then
-              echo "no"
-            else
-              echo "${dir:2}"
-            fi
-            # Return to the original directory
-            cd ..
-          done
+          #   # Check if the directory has been modified
+          #   if git diff --exit-code --quiet $previous_commit -- "${dir:2}"; then
+          #     echo "no"
+          #   else
+          #     echo "${dir:2}"
+          #   fi
+          #   # Return to the original directory
+          #   cd ..
+          # done
 
 
         env:
