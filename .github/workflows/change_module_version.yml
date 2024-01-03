@@ -27,12 +27,7 @@ jobs:
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
             cd "${dir:2}"
-              if git diff --exit-code "$before_sha" -- .; then
-                echo "No differences found in ${dir:2} since the last commit."
-              else
-                # Print the differences
-                git diff "$before_sha"
-              fi
+            git diff --exit-code --quiet HEAD origin/main -- "${dir:2}" || echo "yes" && echo "no"
             # Return to the original directory
             cd ..
         done
