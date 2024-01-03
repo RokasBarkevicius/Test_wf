@@ -17,12 +17,19 @@ jobs:
         id: get-changes
         run: |
 
-          changed_dirs=$(git diff --name-only origin/main...HEAD | grep '/' | cut -d'/' -f1 | sort -u)
-
-          echo "in"
-          for dir in $changed_dirs; do
-            echo "Changed directory $dir"
-            # Add your logic here to perform actions on each changed directory
+          # Find all first level folders in repository 
+          directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
+          for dir in $directories_to_modify; do
+            cd "${dir:2}"
+            echo "${dir:2}"
+            previous_commit=$(git rev-parse -2 -- "${dir:2}")
+            if git diff --exit-code --quiet $previous_commit -- "${dir:2}"; then
+              echo "no"
+            else
+              echo "${dir:2}"
+            fi
+            # Return to the original directory
+            cd ..
           done
 
 
