@@ -17,7 +17,15 @@ jobs:
         id: get-changes
         run: |
 
-          changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^.*\/' | sed 's/\/$//')
+          if [ -n "${{ github.event.before }}" ]; then
+            before_commit=${{ github.event.before }}
+          else
+            # Use the initial commit for non-empty repositories
+            before_commit=$(git rev-list --max-parents=0 HEAD)
+          fi
+          
+          after_commit=${{ github.sha }}
+          changed_dirs=$(git diff --name-only $before_commit $after_commit | grep '^.*\/' | sed 's/\/$//')
           echo "in"
           for dir in $changed_dirs; do
             echo "Changed directory $dir"
