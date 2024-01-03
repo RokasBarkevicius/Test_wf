@@ -23,12 +23,17 @@ jobs:
     - name: Change Module Version
       run: |
       
+        latest_commit=$(git rev-parse origin/main)
         # Find all first level folders in repository 
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
           cd "${dir:2}"
           echo "${dir:2}"
-          git diff --exit-code --quiet HEAD origin/main -- "${dir:2}" || { echo "yes"; exit 1; }
+          if git diff --exit-code --quiet $latest_commit -- "${dir:2}"; then
+            echo "no"
+          else
+            echo "${dir:2}"
+          fi
           # Return to the original directory
           cd ..
         done
