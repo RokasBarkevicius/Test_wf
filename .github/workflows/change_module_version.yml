@@ -28,7 +28,7 @@ jobs:
         for dir in $directories_to_modify; do
           cd "${dir:2}"
           echo "${dir:2}"
-          git diff --exit-code --quiet HEAD origin/main -- "${dir:2}" || echo "yes" && echo "no"
+          git diff --exit-code --quiet HEAD origin/main -- "${dir:2}" || { echo "yes"; exit 1; }
           # Return to the original directory
           cd ..
         done
