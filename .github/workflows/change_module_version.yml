@@ -28,7 +28,7 @@ jobs:
               continue
             fi
 
-            if [[ "${value}" == *"/"* ]]; then
+            if [[ "${file}" == *"/"* ]]; then
               # Split value by /
               IFS='/' read -ra parts <<< "$file"
 
