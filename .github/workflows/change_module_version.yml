@@ -18,17 +18,12 @@ jobs:
         run: |
 
           changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^.*\/' | sed 's/\/$//')
-          echo "::set-output name=changed_dirs::$changed_dirs"
-
-      - name: Display changed directories
-        run: |
-
-          changed_dirs="${{ steps.get-changes.outputs.changed_dirs }}"
-          IFS=' ' read -ra dirs <<< "$changed_dirs"
-          for dir in "${dirs[@]}"; do
-            echo "Changed directory: $dir"
+          echo "in"
+          for dir in $changed_dirs; do
+            echo "Changed directory $dir"
             # Add your logic here to perform actions on each changed directory
           done
-          
+
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
