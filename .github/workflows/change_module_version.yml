@@ -18,7 +18,7 @@ jobs:
         run: |
 
           echo "Changed files:"
-          a: git diff --name-only HEAD -- .
+          a = $(git diff --name-only HEAD -- .)
           echo "$a"
           # # Find all first level folders in repository 
           # directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
