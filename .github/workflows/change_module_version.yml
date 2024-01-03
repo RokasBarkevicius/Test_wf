@@ -19,10 +19,30 @@ jobs:
         run: |
 
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-
+          
+          changed_directories=()
           for file in $changed_files; do
             echo "$file"
+            if [[ "${file}" == .* ]]; then
+              echo "skip"
+              continue
+            fi
+
+            # Split value by /
+            IFS='/' read -ra parts <<< "$file"
+
+            # Get the first component as modified value
+            modified_value="${parts[0]}"
+
+            # Check if the modified value is not already in the list
+            if [[ ! " $changed_directories " =~ " $modified_value " ]]; then
+                # Add the modified value to the list
+                changed_directories+=("${modified_value}")
+            fi
+
           done
+          echo "Modified and Unique Values $modified_values"
+
           # # Find all first level folders in repository 
           # directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
           # for dir in $directories_to_modify; do
