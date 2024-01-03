@@ -27,8 +27,8 @@ jobs:
           if [ "$before_commit" = "$after_commit" ]; then
             before_commit=$(git log --reverse --pretty=format:%H | head -n 1)
           fi
-          
-          changed_dirs=$(git diff --name-only $before_commit $after_commit | grep '^.*\/' | sed 's/\/$//')
+
+          changed_dirs=$(git diff --name-only $before_commit $after_commit)
           echo "in"
           for dir in $changed_dirs; do
             echo "Changed directory $dir"
