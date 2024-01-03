@@ -17,8 +17,11 @@ jobs:
         id: get-changes
         run: |
 
-          echo "Changed files:"
-          echo "$(git diff --name-only HEAD -- .)"
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+          for file in $changed_files; do
+            echo "$file"
+          done
           # # Find all first level folders in repository 
           # directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
           # for dir in $directories_to_modify; do
