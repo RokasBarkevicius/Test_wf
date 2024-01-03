@@ -18,15 +18,16 @@ jobs:
         run: |
 
           # Find the commit hash of the latest commit on the main branch
-          after_commit=$(git rev-parse HEAD)
+          after_commit=$(git log -1 --pretty=format:%H)
 
           # Find the commit hash of the previous commit
-          before_commit=$(git rev-parse HEAD^1)
+          before_commit=$(git log -1 --skip=1 --pretty=format:%H)
 
           # Use the initial commit for the first commit to the branch
           if [ "$before_commit" = "$after_commit" ]; then
-            before_commit=$(git log --reverse --format=%H | head -n 1)
+            before_commit=$(git log --reverse --pretty=format:%H | head -n 1)
           fi
+          
           changed_dirs=$(git diff --name-only $before_commit $after_commit | grep '^.*\/' | sed 's/\/$//')
           echo "in"
           for dir in $changed_dirs; do
