@@ -17,19 +17,8 @@ jobs:
         id: get-changes
         run: |
 
-          # Find the commit hash of the latest commit on the main branch
-          after_commit=$(git log -1 --pretty=format:%H)
+          changed_dirs=$(git diff --name-only origin/main...HEAD | grep '/' | cut -d'/' -f1 | sort -u)
 
-          # Find the commit hash of the previous commit
-          before_commit=$(git log -1 --skip=1 --pretty=format:%H)
-
-          # Use the initial commit for the first commit to the branch
-          if [ "$before_commit" = "$after_commit" ]; then
-            echo "same"
-            before_commit=$(git log --reverse --pretty=format:%H | head -n 1)
-          fi
-
-          changed_dirs=$(git diff --name-only $before_commit $after_commit)
           echo "in"
           for dir in $changed_dirs; do
             echo "Changed directory $dir"
