@@ -10,34 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      
-    - name: Setup Git Config
-      run: |
-      
-        # Setup the username and email.
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-          
-    - name: Change Module Version
-      run: |
-      
-        
-        # Find all first level folders in repository 
-        directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
-        for dir in $directories_to_modify; do
-          cd "${dir:2}"
-          echo "${dir:2}"
-          previous_commit=$(git rev-parse -- "${dir:2}")
-          if git diff --exit-code --quiet $previous_commit -- "${dir:2}"; then
-            echo "no"
-          else
-            echo "${dir:2}"
-          fi
-          # Return to the original directory
-          cd ..
-        done
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get changed directories
+        id: get-changes
+        run: |
+
+          changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^.*\/' | sed 's/\/$//')
+          echo "::set-output name=changed_dirs::$changed_dirs"
+
+      - name: Display changed directories
+        run: |
+
+          changed_dirs="${{ steps.get-changes.outputs.changed_dirs }}"
+          IFS=' ' read -ra dirs <<< "$changed_dirs"
+          for dir in "${dirs[@]}"; do
+            echo "Changed directory: $dir"
+            # Add your logic here to perform actions on each changed directory
+          done
+          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
