@@ -26,10 +26,11 @@ jobs:
         # Find all first level folders in repository 
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
-            cd "${dir:2}"
-            git diff --exit-code --quiet HEAD origin/main -- "${dir:2}" || echo "yes" && echo "no"
-            # Return to the original directory
-            cd ..
+          cd "${dir:2}"
+          echo "${dir:2}"
+          git diff --exit-code --quiet HEAD origin/main -- "${dir:2}" || echo "yes" && echo "no"
+          # Return to the original directory
+          cd ..
         done
 
       env:
