@@ -23,7 +23,7 @@ jobs:
     - name: Change Module Version
       run: |
       
-        previous_commit=$(git rev-parse origin/main^1)
+        previous_commit=$(git rev-parse origin/main~1)
         # Find all first level folders in repository 
         directories_to_modify=$(find . -maxdepth 1 -type d -not -name ".*")
         for dir in $directories_to_modify; do
