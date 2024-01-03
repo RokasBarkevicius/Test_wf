@@ -25,6 +25,7 @@ jobs:
 
           # Use the initial commit for the first commit to the branch
           if [ "$before_commit" = "$after_commit" ]; then
+            echo "same"
             before_commit=$(git log --reverse --pretty=format:%H | head -n 1)
           fi
 
