@@ -7,7 +7,7 @@
     "category": "Category",
     "author": "Baltic Shipping",
     "website": "Website",
-    "license": "Lo=icense",
+    "license": "License",
     'depends': ["depends"],
     'data':[
         'data/data.xml',
