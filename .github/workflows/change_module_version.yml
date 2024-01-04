@@ -54,7 +54,7 @@ jobs:
           for dir in ${changed_directories[@]}; do
             file_path="${modified_value}/__manifest__.py"
             # Check if the folder has a file named __manifest__.py at depth 1
-            if [[ -f "${file_path}" ]]; then
+            if [[ -f ${file_path} ]]; then
               echo "${dir}"
               if grep -qE '^[[:space:]]*(version|"version")' "${file_path}"; then
                 echo "File ${file_path} contains a line starting with 'version' or \"version\""
