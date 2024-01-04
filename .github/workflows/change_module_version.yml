@@ -52,7 +52,7 @@ jobs:
           # Find all first level folders in repository 
           all_directories=$(find . -maxdepth 1 -type d -not -name ".*")
           for dir in ${changed_directories[@]}; do
-            file_path="${modified_value}/__manifest__.py"
+            file_path="${dir}/__manifest__.py"
             # Check if the folder has a file named __manifest__.py at depth 1
             if [[ -f ${file_path} ]]; then
               echo "${dir}"
@@ -62,8 +62,8 @@ jobs:
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
               fi
             else
-                echo "skip module $dir"
-                continue
+              echo "skip module $dir"
+              continue
             fi
           done
 
