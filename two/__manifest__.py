@@ -2,7 +2,7 @@
 {
     'name': "template",
 	'version': "",
-    "summar": """ edfvd""",
+    "summar": """ edfvhd""",
     "description": """ """,
     "category": "Category",
     "author": "Baltic Shipping",
