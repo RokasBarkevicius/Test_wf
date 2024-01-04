@@ -2,7 +2,7 @@
 {
     'name': "template",
 	"version": "15.0.0.0",
-    "summar": """ ev""",
+    "summar": """ efv""",
     "description": """ """,
     "category": "Category",
     "author": "Baltic Shipping",

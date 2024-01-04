@@ -56,7 +56,7 @@ jobs:
             # Check if the folder has a file named __manifest__.py at depth 1
             if [[ -f ${file_path} ]]; then
               echo "${dir}"
-              if grep -qE '^[[:space:]]*("\"'version"\"'|"version")' "${file_path}"; then
+              if grep -qE '^[[:space:]]*(\'version\'|"version")' "${file_path}"; then
                 echo "File ${file_path} contains a line starting with 'version' or \"version\""
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
