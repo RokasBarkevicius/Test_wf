@@ -64,7 +64,7 @@ jobs:
                   # You can use the extracted value in further logic
                 else
                   echo "Failed to extract version value from ${file_path}"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''][^'\''"]+['\'']/"version"'\:'' "15.0.0.0"/' "${file_path}"
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"version"'\:' "15.0.0.0"/' "${file_path}"
                   echo updated
 
                 fi
