@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
     'name': "template",
-    "version": "15.0.5.7"
-    "summar": """ dedfvhdgggg""",
+    "version": "15.0.5.8"
+    "summar": """ dedfvhdgg""",
     "description": """ """,
     "category": "Category",
     "author": "Baltic Shipping",
