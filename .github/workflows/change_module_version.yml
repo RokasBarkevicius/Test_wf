@@ -75,17 +75,26 @@ jobs:
               echo "${dir} has manifest"
               if grep -qE '^[[:space:]]*('\''version'\''|"version")' "${file_path}"; then
                 echo "File ${file_path} contains a line starting with 'version' or \"version\""
+
+                version_line=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}" 
+                echo $version_line
+
+
+
+
+
                 value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
                   # You can use the extracted value in further logic
                 else
                   echo "Failed to extract version value from ${file_path}. Adding base version"
+
                   #"version"'\:' "15.0.0.0"
                   sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/"this is me"/' "${file_path}"
                   echo updated
                   
-                  new_changes=true
+                  # new_changes=true
                 fi
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
