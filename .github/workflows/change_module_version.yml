@@ -78,6 +78,9 @@ jobs:
                   # Stage the changes
                   git add ${file_path}
                   new_changes=true
+
+                  echo "Changes in ${file_path}:"
+                  git diff --cached "${file_path}"
                 fi
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
