@@ -86,7 +86,8 @@ jobs:
                 value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/"this is me"/' "${file_path}"
+                  vv="13.3"
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/[[:space:]]{4}"version:"[[:space:]]"$vv"/' "${file_path}"
                   new_changes=true
                   # You can use the extracted value in further logic
                 else
