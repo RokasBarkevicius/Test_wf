@@ -22,6 +22,13 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
 
+      - name: Increment last number and set new version
+        run: |
+          VERSION=$(echo "12.0.0.0")
+          LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}' | awk '{print $1+1}')
+          NEW_VERSION=$(echo $VERSION | awk -F. '{$NF=$LAST_NUMBER; OFS="."}1')
+          echo "New version is $NEW_VERSION"
+          
       - name: Get changed directories
         id: get-changes
         run: |
@@ -73,14 +80,11 @@ jobs:
                   # You can use the extracted value in further logic
                 else
                   echo "Failed to extract version value from ${file_path}. Adding base version"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"version"'\:' "15.0.0.0"/' "${file_path}"
-                  echo updated
-                  # Stage the changes
-                  git add ${file_path}
-                  new_changes=true
-
-                  echo "Changes in ${file_path}:"
-                  git diff --cached "${file_path}"
+                  # sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"version"'\:' "15.0.0.0"/' "${file_path}"
+                  # echo updated
+                  # # Stage the changes
+                  # git add ${file_path}
+                  # new_changes=true
                 fi
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
