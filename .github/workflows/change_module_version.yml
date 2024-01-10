@@ -26,6 +26,7 @@ jobs:
         run: |
           VERSION="12.0.0.0"
           LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}')
+          echo $LAST_NUMBER
           NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
           NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{$NF=""; print $0$NEW_LAST_NUMBER}')
           echo "New version is $NEW_VERSION"
