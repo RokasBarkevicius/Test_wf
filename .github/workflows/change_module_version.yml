@@ -22,14 +22,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
 
-      - name: Increment last number and set new version
-        run: |
-          VERSION="12.0.0.21"
-          echo "New version is $VERSION"
-          LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}')
-          NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
-          NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. -v NEW_LAST_NUMBER="${NEW_LAST_NUMBER}" '{$NF=""; print $0 NEW_LAST_NUMBER}')
-          echo "New version is $NEW_VERSION"
 
       - name: Get changed directories
         id: get-changes
@@ -70,37 +62,33 @@ jobs:
 
           for dir in ${changed_directories[@]}; do
             file_path="${dir}/__manifest__.py"
+
+            # Check if __manifest__.py was modified in this folder
+            if [[ " ${changed_files[@]} " =~ " ${file_path} " ]]; then
+                echo "__manifest__.py modified in this folder, version will not be increased"
+                continue
+            fi
+
             # Check if the folder has a file named __manifest__.py at depth 1
             if [[ -f ${file_path} ]]; then
               echo "${dir} has manifest"
               if grep -qE '^[[:space:]]*('\''version'\''|"version")' "${file_path}"; then
                 echo "File ${file_path} contains a line starting with 'version' or \"version\""
 
-                version_line=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}"| awk -F. '{print $0}' )
-                echo " this ${version_line}"
-
-
-
-
-
                 value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
+                  # Remove quotes from value
                   value="${value//\"/}"
+                  # Increment the last number by one
                   LAST_NUMBER=$(echo ${value} | awk -F. '{print $NF}')
                   NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
                   NEW_VERSION=$(echo $value | awk -F. -v OFS=. -v NEW_LAST_NUMBER="${NEW_LAST_NUMBER}" '{$NF=""; print $0 NEW_LAST_NUMBER}')
+                  # Change the version line with new version
                   sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/    "version"'\:' "'$NEW_VERSION'"/' "${file_path}"
                   new_changes=true
-                  # You can use the extracted value in further logic
                 else
-                  echo "Failed to extract version value from ${file_path}. Adding base version"
-
-                  #"version"'\:' "15.0.0.0"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/"this is me"/' "${file_path}"
-                  echo updated
-                  
-                  # new_changes=true
+                  echo "Failed to extract version value from ${file_path}."
                 fi
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
