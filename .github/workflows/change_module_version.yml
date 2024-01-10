@@ -28,7 +28,7 @@ jobs:
         run: |
 
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          echo "changed files ${changed_files[@]}"
+          echo "changed files ${changed_files}"
           changed_directories=()
           for file in ${changed_files[@]}; do
             echo "$file"
