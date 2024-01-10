@@ -86,8 +86,7 @@ jobs:
                 value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
-                  vv="13.3.3"
-                  echo "New version is $VERSION"
+
                   LAST_NUMBER=$(echo ${value} | awk -F. '{print $NF}')
                   NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
                   NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. -v NEW_LAST_NUMBER="${NEW_LAST_NUMBER}" '{$NF=""; print $0 NEW_LAST_NUMBER}')
