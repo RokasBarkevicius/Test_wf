@@ -24,11 +24,12 @@ jobs:
 
       - name: Increment last number and set new version
         run: |
-          VERSION=$(echo "12.0.0.0")
-          LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}' | awk '{print $1+1}')
-          NEW_VERSION=$(echo $VERSION | awk -F. '{$NF=$LAST_NUMBER; OFS="."}1')
+          VERSION="12.0.0.0"
+          LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}')
+          NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
+          NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. '{$NF=$NEW_LAST_NUMBER; print}')
           echo "New version is $NEW_VERSION"
-          
+
       - name: Get changed directories
         id: get-changes
         run: |
