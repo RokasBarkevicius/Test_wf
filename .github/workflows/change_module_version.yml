@@ -25,10 +25,9 @@ jobs:
       - name: Increment last number and set new version
         run: |
           VERSION="12.0.0.21"
+          echo "New version is $VERSION"
           LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}')
-          echo $LAST_NUMBER
           NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
-          echo $NEW_LAST_NUMBER
           NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. -v NEW_LAST_NUMBER="${NEW_LAST_NUMBER}" '{$NF=""; print $0 NEW_LAST_NUMBER}')
           echo "New version is $NEW_VERSION"
 
@@ -68,8 +67,7 @@ jobs:
           echo "Modified and Unique Values ${changed_directories[@]}"
 
           new_changes=false
-          # Find all first level folders in repository 
-          all_directories=$(find . -maxdepth 1 -type d -not -name ".*")
+
           for dir in ${changed_directories[@]}; do
             file_path="${dir}/__manifest__.py"
             # Check if the folder has a file named __manifest__.py at depth 1
@@ -83,11 +81,11 @@ jobs:
                   # You can use the extracted value in further logic
                 else
                   echo "Failed to extract version value from ${file_path}. Adding base version"
-                  # sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"version"'\:' "15.0.0.0"/' "${file_path}"
-                  # echo updated
-                  # # Stage the changes
-                  # git add ${file_path}
-                  # new_changes=true
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"version"'\:' "15.0.0.0"/' "${file_path}"
+                  echo updated
+                  # Stage the changes
+                  git add "${file_path}"
+                  new_changes=true
                 fi
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
