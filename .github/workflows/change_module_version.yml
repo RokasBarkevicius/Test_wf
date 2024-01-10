@@ -64,7 +64,7 @@ jobs:
             file_path="${dir}/__manifest__.py"
 
             # Check if __manifest__.py was modified in this folder
-            if [[ $changed_files == *"$value"* ]]; then
+            if [[ $changed_files == *"$file_path"* ]]; then
                 echo "__manifest__.py modified in this folder, version will not be increased"
                 continue
             fi
