@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "template",
-    "version": "4"
+    "version": "5"
     "summar": """ edfvhdg""",
     "description": """ """,
     "category": "Category",
