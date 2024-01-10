@@ -84,8 +84,7 @@ jobs:
                   #"version"'\:' "15.0.0.0"
                   sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"this is me"/' "${file_path}"
                   echo updated
-                  # Stage the changes
-                  git add "${file_path}"
+                  
                   new_changes=true
                 fi
               else
@@ -99,6 +98,9 @@ jobs:
 
           # Check if there are changes
           if [ "$new_changes" = true ]; then
+              # Stage the changes
+              git add ${changed_directories[@]}
+
               # Commit the changes with a custom message
               git commit -m "Change or add version"
 
