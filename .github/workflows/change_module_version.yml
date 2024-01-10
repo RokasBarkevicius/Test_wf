@@ -81,7 +81,8 @@ jobs:
                   # You can use the extracted value in further logic
                 else
                   echo "Failed to extract version value from ${file_path}. Adding base version"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"version"'\:' "15.0.0.0"/' "${file_path}"
+                  #"version"'\:' "15.0.0.0"
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"this is me"/' "${file_path}"
                   echo updated
                   # Stage the changes
                   git add "${file_path}"
