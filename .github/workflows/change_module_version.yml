@@ -24,7 +24,7 @@ jobs:
 
       - name: Increment last number and set new version
         run: |
-          VERSION="12.0.0.0"
+          VERSION="12.0.0.21"
           LAST_NUMBER=$(echo $VERSION | awk -F. '{print $NF}')
           echo $LAST_NUMBER
           NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
