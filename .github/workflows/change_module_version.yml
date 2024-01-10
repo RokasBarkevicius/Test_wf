@@ -82,7 +82,7 @@ jobs:
                 else
                   echo "Failed to extract version value from ${file_path}. Adding base version"
                   #"version"'\:' "15.0.0.0"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\'']([^'\''"]+)['\'']/"this is me"/' "${file_path}"
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''""]/"this is me"/' "${file_path}"
                   echo updated
                   
                   new_changes=true
