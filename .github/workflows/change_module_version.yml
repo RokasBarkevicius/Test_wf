@@ -87,7 +87,11 @@ jobs:
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
                   vv="13.3.3"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/    "version"'\:' "'$vv'"/' "${file_path}"
+                  echo "New version is $VERSION"
+                  LAST_NUMBER=$(echo ${value} | awk -F. '{print $NF}')
+                  NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
+                  NEW_VERSION=$(echo $VERSION | awk -F. -v OFS=. -v NEW_LAST_NUMBER="${NEW_LAST_NUMBER}" '{$NF=""; print $0 NEW_LAST_NUMBER}')
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/    "version"'\:' "'$NEW_VERSION'"/' "${file_path}"
                   new_changes=true
                   # You can use the extracted value in further logic
                 else
