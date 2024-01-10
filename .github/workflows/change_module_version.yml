@@ -76,7 +76,7 @@ jobs:
               if grep -qE '^[[:space:]]*('\''version'\''|"version")' "${file_path}"; then
                 echo "File ${file_path} contains a line starting with 'version' or \"version\""
 
-                version_line=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}"| awk '{print $0}' )
+                version_line=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}"| awk -F. '{print $0}' )
                 echo $version_line
 
 
