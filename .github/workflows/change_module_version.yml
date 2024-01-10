@@ -87,7 +87,7 @@ jobs:
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
                   vv="13.3"
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/    "version" ${vv}/' "${file_path}"
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/    "version"'\:' '$vv'/' "${file_path}"
                   new_changes=true
                   # You can use the extracted value in further logic
                 else
