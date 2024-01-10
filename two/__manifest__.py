@@ -2,7 +2,7 @@
 {
     'name': "template",
     "version": "15.0.5.11",
-    "summar": """ dedfeeddgvhdghggg""",
+    "summar": """ dedfeeddgvdhdghggg""",
     "description": """ """,
     "category": "Category",
     "author": "Baltic Shipping",
