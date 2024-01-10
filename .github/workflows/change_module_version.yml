@@ -75,7 +75,7 @@ jobs:
               if grep -qE '^[[:space:]]*('\''version'\''|"version")' "${file_path}"; then
                 echo "File ${file_path} contains a line starting with 'version' or \"version\""
 
-                value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
+                value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"],' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
                 if [ -n "${value}" ]; then
                   echo "Found version value ${value}"
                   # Remove quotes from value
@@ -85,7 +85,7 @@ jobs:
                   NEW_LAST_NUMBER=$((LAST_NUMBER + 1))
                   NEW_VERSION=$(echo $value | awk -F. -v OFS=. -v NEW_LAST_NUMBER="${NEW_LAST_NUMBER}" '{$NF=""; print $0 NEW_LAST_NUMBER}')
                   # Change the version line with new version
-                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"]/    "version"'\:' "'$NEW_VERSION'"/' "${file_path}"
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"],/    "version"'\:' "'$NEW_VERSION'",/' "${file_path}"
                   new_changes=true
                 else
                   echo "Failed to extract version value from ${file_path}."
