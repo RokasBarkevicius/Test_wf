@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "template",
-    "version": "asa.7",
+    "version": "asa.8",
     "summar": """ edfvhdg""",
     "description": """ """,
     "category": "Category",

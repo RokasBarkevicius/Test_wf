@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "template",
-    "version": "15.0.5.18",
+    "version": "15.0.5.19",
     "summar": """ dedfeeddgvdhdghggg""",
     "description": """ """,
     "category": "Category",
