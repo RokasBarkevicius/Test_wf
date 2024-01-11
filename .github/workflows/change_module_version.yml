@@ -29,8 +29,6 @@ jobs:
 
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
 
-          changed_code=$(git diff ${{ github.event.before }} ${{ github.sha }})
-          echo "$changed_code[@]"
           changed_directories=()
           for file in ${changed_files[@]}; do
             if [[ "${file}" == .* ]]; then
@@ -59,11 +57,12 @@ jobs:
           for dir in ${changed_directories[@]}; do
             echo "working on ${dir}"
             file_path="${dir}/__manifest__.py"
-            # Check if __manifest__.py was modified in this folder
-            if [[ $changed_files == *"$file_path"* ]]; then
-                echo "__manifest__.py was modified in this folder, version will not be increased"
-                continue
-            fi
+
+            # # Check if __manifest__.py was modified in this folder
+            # if [[ $changed_files == *"$file_path"* ]]; then
+            #     echo "__manifest__.py was modified in this folder, version will not be increased"
+            #     continue
+            # fi
 
             # Check if the folder has a file named __manifest__.py at depth 1
             if [[ -f ${file_path} ]]; then
