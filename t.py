@@ -3,7 +3,7 @@ _logger = logging.getLogger(__name__)
 
 a = 5
 # _logger.info(a)
-b = 6
+b = 66
 c = a*b +7
 # _logger.debug(
 #       "%s\nhello\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" %(
