@@ -1,5 +1,56 @@
 #!/bin/bash
 
+#region Comment out logger
+
+# Find all Python files with the .py extension 
+files_to_modify=$(find . -type f -name "*.py")
+
+# Comment out occurrences of _logger.info/debug/warning/error("Message") with multi-line support
+for file in $files_to_modify; do
+    awk '
+        /_logger\./ {
+            if (!/^#/) {
+                print "# " $0
+                openParenCount = 0
+                lineOpenParenCount = gsub(/\(/, "", $0)
+                openParenCount += lineOpenParenCount
+                lineCloseParenCount = gsub(/\)/, "", $0)
+                openParenCount -= lineCloseParenCount
+                if (openParenCount == 0) {
+                    commentBlock=0
+                } else {
+                    commentBlock=1
+                }
+            } else {
+                print $0
+            }
+            next
+        }
+        commentBlock {
+            if (!/^#/) {
+                print "# " $0
+                lineOpenParenCount = gsub(/\(/, "", $0)
+                openParenCount += lineOpenParenCount
+                lineCloseParenCount = gsub(/\)/, "", $0)
+                openParenCount -= lineCloseParenCount
+                if (openParenCount == 0){
+                    commentBlock=0
+                } else {
+                    commentBlock=1
+                }
+            } else {
+                print $0
+            }  
+            next
+        }
+        { print }
+    ' $file > temp_file && mv temp_file $file
+    
+done
+
+#endregion
+#region version increment
+
 modified_files=$(git status --porcelain | awk '$1 ~ /^(M|\?\?)/ {print $2}')
 
 # Initialize an array to store first-level folders
@@ -52,6 +103,7 @@ for folder in "${modified_folders[@]}"; do
     fi
 done
 
+#endregion
 
 # Add all changes in the repository to the staging area
 git add .
