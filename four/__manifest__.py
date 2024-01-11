@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "template",
-    "version": "ala.2",
+    "version": "ala.3",
     "summar": """ edfvhdg""",
     "description": """ """,
     "category": "Category",
