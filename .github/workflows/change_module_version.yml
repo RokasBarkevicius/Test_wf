@@ -28,12 +28,9 @@ jobs:
         run: |
 
           changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          echo "changed files ${changed_files[@]}"
           changed_directories=()
           for file in ${changed_files[@]}; do
-            echo "$file"
             if [[ "${file}" == .* ]]; then
-              echo "skip on start"
               continue
             fi
 
@@ -44,11 +41,9 @@ jobs:
               # Get the first component as modified value
               directory_name="${parts[0]}"
             else
-              echo "skip on split"
               continue
             fi
             
-            echo "$directory_name"
             # Check if the modified value is not already in the list
             if [[ ! " ${changed_directories[@]} " =~ " ${directory_name} " ]]; then
                 # Add the modified value to the list
@@ -56,28 +51,26 @@ jobs:
             fi
 
           done
-          echo "Modified and Unique Values ${changed_directories[@]}"
 
           new_changes=false
-
           for dir in ${changed_directories[@]}; do
+            echo "working on ${dir}"
             file_path="${dir}/__manifest__.py"
-
             # Check if __manifest__.py was modified in this folder
             if [[ $changed_files == *"$file_path"* ]]; then
-                echo "__manifest__.py modified in this folder, version will not be increased"
+                echo "__manifest__.py was modified in this folder, version will not be increased"
                 continue
             fi
 
             # Check if the folder has a file named __manifest__.py at depth 1
             if [[ -f ${file_path} ]]; then
-              echo "${dir} has manifest"
+              echo "${dir} has __manifest__.py"
               if grep -qE '^[[:space:]]*('\''version'\''|"version")' "${file_path}"; then
-                echo "File ${file_path} contains a line starting with 'version' or \"version\""
+                echo "${file_path} contains a line starting with 'version' or \"version\""
 
                 value=$(grep -Eo '^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"],' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d '[:space:]')
                 if [ -n "${value}" ]; then
-                  echo "Found version value ${value}"
+                  echo "Found version value"
                   # Remove quotes from value
                   value="${value//\"/}"
                   # Increment the last number by one
@@ -88,7 +81,7 @@ jobs:
                   sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]([^'\''"]+)['\''"],/    "version"'\:' "'$NEW_VERSION'",/' "${file_path}"
                   new_changes=true
                 else
-                  echo "Failed to extract version value from ${file_path}. Adding a default v"
+                  echo "Failed to extract version value from ${file_path}. Adding a default value"
                   sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:.*/    "version"'\:' "15.0.0.0",/' "${file_path}"
                   new_changes=true
                   
@@ -97,7 +90,7 @@ jobs:
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
               fi
             else
-              echo "skip module $dir no manifest"
+              echo "${dir} has __manifest__.py. Skipping directory."
               continue
             fi
           done
