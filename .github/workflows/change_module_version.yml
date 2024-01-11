@@ -89,6 +89,9 @@ jobs:
                   new_changes=true
                 else
                   echo "Failed to extract version value from ${file_path}."
+                  sed -i -E 's/^[[:space:]]*('\''version'\''|"version")[[:space:]]*:[[:space:]]*['\''"]['\''"],/    "version"'\:' "15.0.0.0",/' "${file_path}"
+                  new_changes=true
+                  
                 fi
               else
                 echo "File ${file_path} does not contain a line starting with 'version' or \"version\""
