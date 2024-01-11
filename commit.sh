@@ -105,6 +105,7 @@ for folder in "${modified_folders[@]}"; do
 done
 
 #endregion
+
 message="Updated modules: ${modified_folders[@]}"
 echo "$message"
 # Add all changes in the repository to the staging area
