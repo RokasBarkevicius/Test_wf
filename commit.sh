@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# modified_files=$(git diff --name-status --diff-filter=AM| awk '{print $2}')
 modified_files=$(git status --porcelain | awk '$1 ~ /^(M|\?\?)/ {print $2}')
-# | awk '$1 ~ /^(M|A)/ {print $2}')
-
-echo "$modified_files"
-echo " "
 
 # Initialize an array to store first-level folders
 modified_folders=()
@@ -18,30 +13,26 @@ for file in $modified_files; do
 
         # Check if the folder does not start with a dot
         if [[ "$folder_name" != .* ]]; then
-
+            # Check  if the folder is not already in the array
             if  [[ ! " ${modified_folders[@]} " =~ " $folder_name " ]]; then
+                # Add the folder to the array
                 modified_folders+=("$folder_name")
             fi
         fi
     fi
 done
 
-
-
-echo "${modified_folders[@]}"
 # Iterate through the list of unique first-level folders
 for folder in "${modified_folders[@]}"; do
     file_path="${folder}/__manifest__.py"
-
     # Check if the folder contains "__manifest__.py"
     if [ -e "$file_path" ]; then
-        echo "$folder has __manifest__.py"
+        # Check if the manifest file has a line starting with "version" or 'version'
         if grep -qE '^ *('\''version'\''|"version") *:' "${file_path}"; then
-            echo "${file_path} contains a line starting with 'version' or \"version\""
+            # Get the current version
             version=$(grep -Eo '^ *('\''version'\''|"version") *: *['\''"]([^'\''"]+)['\''"],' "${file_path}" | awk -F'[:,]' '{print $2}' | tr -d ' ')
-            echo "version: $version"
+            # Check if the version value exists
             if [ -n "$version" ]; then
-                echo "Found version value $version"
                 # Remove quotes from value
                 version="${version//\"/}"
                 # Increment the last number by one
@@ -52,6 +43,8 @@ for folder in "${modified_folders[@]}"; do
                 sed -i -E 's/^ *('\''version'\''|"version") *: *['\''"]([^'\''"]+)['\''"],/    "version"'\:' "'$NEW_VERSION'",/' "$file_path"
                   
             else
+                # If version value does not exits then add a default value (currently "15.0.0.0")
+
                 echo "Failed to extract version value from $file_path. Adding a default value"
                 sed -i -E 's/^ *('\''version'\''|"version") *:.*/    "version"'\:' "15.0.0.0",/' "$file_path"
             fi
@@ -62,4 +55,5 @@ done
 
 # Add all changes in the repository to the staging area
 git add .
+# Commit all changes
 git commit -m "Update version in __manifest__.py files by $USER"
