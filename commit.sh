@@ -45,10 +45,11 @@ for file in $files_to_modify; do
         }
         { print }
     ' $file > temp_file && mv temp_file $file
-    
+
 done
 
 #endregion
+
 #region version increment
 
 modified_files=$(git status --porcelain | awk '$1 ~ /^(M|\?\?)/ {print $2}')
@@ -104,8 +105,9 @@ for folder in "${modified_folders[@]}"; do
 done
 
 #endregion
-
+message="Updated modules: ${modified_folders[@]}"
+echo "$message"
 # Add all changes in the repository to the staging area
 git add .
 # Commit all changes
-git commit -m "Update version in __manifest__.py files by $USER"
+git commit -m "$message"
